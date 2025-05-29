@@ -1,21 +1,21 @@
 
 import './App.css'
+import { Routes, Route } from 'react-router-dom'
+import Demo from './components/Demo/Demo'
+import Home from './components/Home/Home'
+import HomeHeader from './components/Home/HomeHeader.jsx';
+import DemoHeader from './components/Demo/DemoHeader.jsx';
 
 function App() {
+  const auth = false;
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col justify-center">
-      <div className="relative py-3 sm:max-w-full sm:mx-auto">
-        <div className="relative px-4 py-10 bg-white shadow-lg sm:rounded-3xl sm:p-20">
-          <div className="max-w-md mx-auto">
-            <div className="divide-y divide-gray-200">
-              <div className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-                <p className="text-2xl font-bold text-red-900">Hello Tailwind CSS!</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <>
+    {auth? <HomeHeader/> : <DemoHeader/>}
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/demo" element={<Demo />} />
+    </Routes>
+    </>
   )
 }
 
