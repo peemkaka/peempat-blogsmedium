@@ -6,12 +6,14 @@ import Home from './components/Home/Home'
 import HomeHeader from './components/Home/HomeHeader.jsx';
 import DemoHeader from './components/Demo/DemoHeader.jsx';
 import { Blog } from './context/context.jsx';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
   const {currentUser} = Blog();
   return (
     <>
     {currentUser? <HomeHeader/> : <DemoHeader/>}
+    <ToastContainer/>
     <Routes>
       {currentUser && <Route path="/" element={<Home />} />}
       {!currentUser && <Route path="/demo" element={<Demo />} />}
