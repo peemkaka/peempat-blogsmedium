@@ -5,9 +5,10 @@ import Demo from './components/Demo/Demo'
 import Home from './components/Home/Home'
 import HomeHeader from './components/Home/HomeHeader.jsx';
 import DemoHeader from './components/Demo/DemoHeader.jsx';
+import { Blog } from './context/context.jsx';
 
 function App() {
-  const currentUser = false;
+  const {currentUser} = Blog();
   return (
     <>
     {currentUser? <HomeHeader/> : <DemoHeader/>}
