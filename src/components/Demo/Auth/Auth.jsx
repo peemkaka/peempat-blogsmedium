@@ -8,10 +8,9 @@ import { useState } from 'react'
 import SignIn from './SignIn'
 import SignUp from './SignUp'
 
-export const Auth = () => {
+export const Auth = ({modal,setModal}) => {
     const [createUser,setCreateUser] = useState(false);
     const [signRequest,setSignRequest] = useState('');
-    const [modal,setModal] = useState(true);
     const hidden = modal ? 'visible opacity-100':'invisible opacity-0'
   return (
     <Modal modal={modal} setModal={setModal} hidden={hidden}>
