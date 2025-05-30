@@ -1,5 +1,5 @@
 
-import './App.css'
+import './index.css'
 import { Routes, Route } from 'react-router-dom'
 import Demo from './components/Demo/Demo'
 import Home from './components/Home/Home'
