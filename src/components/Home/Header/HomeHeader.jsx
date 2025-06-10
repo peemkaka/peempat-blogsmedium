@@ -45,6 +45,7 @@ const HomeHeader = () => {
     }
   };
 
+
   return (
     <header className="border-b border-gray-200">
       {userLoading && <Loading />}
