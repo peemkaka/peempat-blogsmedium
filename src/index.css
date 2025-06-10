@@ -10,6 +10,11 @@ body{
   @apply font-texts;
 }
 
+.write .ql-editor{
+  font-size: 1.2rem !important;
+  padding: 0 !important;
+}
+
 .size{
   @apply w-[95%] md:w-[90%] mx-auto;
 }
