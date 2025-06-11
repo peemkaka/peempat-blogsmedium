@@ -3,14 +3,19 @@ import useFetch from '../../../hooks/useFetch';
 import { readTime } from '../../../utils/helper';
 import moment from 'moment';
 import SavedPosts from './Actions/SavedPosts';
+import Loading from '../../Loading/Loading';
+import { Blog } from '../../../context/context';
+import Actions from './Actions/Actions';
 
 function PostCard({ post }) {
+  const {currentUser} = Blog();
   const { title, desc, created, image, id: postId, userId } = post; // เปลี่ยน postImg เป็น image
   const { data, loading } = useFetch('users');
   const getUserData = data && data.find((user) => user.id === userId);
   return (
-    <>
+    <section>
       <div className="flex flex-col sm:flex-row gap-4 cursor-pointer">
+        {loading && <Loading/>}
         <div className="flex-[2.5]">
           <p className="pb-2 font-semibold capitalize">{getUserData?.username}</p>
           <h2 className="text-xl font-bold line-clamp-2 leading-6 capitalize">{title}</h2>
@@ -21,18 +26,19 @@ function PostCard({ post }) {
           {/* แสดงรูป */}
         </div>
         <div className="flex-[1]">
-          {image && <img src={image} alt="post" className="w-[53rem] h-[11rem] object-cover" />}
+          {image && <img src={image} alt="post" className="w-[53rem] h-[8rem] object-cover" />}
         </div>
       </div>
       <div className="flex items-center justify-between w-full md:w-[70%] mt-[2rem] md:mt-0">
         <p className="text-xs text-gray-600">
           {readTime({ ___html: desc })} min read . {moment(created).format('MMM DD')}
         </p>
-        <div className='flex items-center gap-3'>
-          <SavedPosts post={post}/>
+        <div className="flex items-center gap-3">
+          <SavedPosts post={post} getUserData={getUserData} />
+          {currentUser?.uid === userId && <Actions/>}
         </div>
       </div>
-    </>
+    </section>
   );
 }
 

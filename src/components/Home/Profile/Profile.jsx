@@ -9,6 +9,7 @@ import { IoSettingsSharp } from 'react-icons/io5';
 import EditProfile from './EditProfile';
 import { Blog } from '../../../context/context';
 import { useParams } from 'react-router-dom';
+import useFetch from '../../../hooks/useFetch';
 
 const Profile = () => {
   const { allUsers } = Blog();
@@ -33,7 +34,8 @@ const Profile = () => {
   const [modal, setModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
 
-  const getUserData = allUsers.find((user) => user.id === userId);
+  const { data, loading } = useFetch('users');
+  const getUserData = data && data.find((user) => user.id === userId);
 
   return (
     <section className="size flex gap-[4rem] relative">
