@@ -15,9 +15,9 @@ function SavedPosts({ post }) {
     subCollectionName: 'savedPosts',
   });
 
-  useEffect(()=>{
+  useEffect(() => {
     setIsSaved(data?.some((item) => item.id === post?.id));
-  },[data, post?.id]);
+  }, [data, post?.id]);
 
   const handleSave = async () => {
     try {
