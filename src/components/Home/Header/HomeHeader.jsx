@@ -8,11 +8,11 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import Search from "./Search";
 import Modal from "../../../utils/Modal";
 import UserModal from "./UserModal";
-import { Blog } from "../../../Context/Context";
 import Loading from "../../Loading/Loading";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../../../firebase/firebase";
 import { toast } from "react-toastify";
+import { Blog } from "../../../context/context";
 
 const HomeHeader = () => {
   const { allUsers, userLoading, currentUser, setPublish, title, description } =

@@ -7,7 +7,7 @@ import { LiaTimesSolid } from 'react-icons/lia';
 import { discoverActions } from '../../../data';
 import { IoSettingsSharp } from 'react-icons/io5';
 import EditProfile from './EditProfile';
-import { Blog } from '../../../Context/Context';
+import { Blog } from '../../../context/context';
 import { useParams } from 'react-router-dom';
 
 const Profile = () => {

@@ -6,7 +6,7 @@ import Home from './components/Home/Home'
 import HomeHeader from './components/Home/Header/HomeHeader.jsx';
 import DemoHeader from './components/Demo/DemoHeader.jsx';
 import { ToastContainer } from 'react-toastify';
-import { Blog } from './Context/Context.jsx';
+import { Blog } from './context/context.jsx';
 import Profile from './components/Home/Profile/Profile.jsx';
 import Write from './components/Home/Write/Write.jsx';
 

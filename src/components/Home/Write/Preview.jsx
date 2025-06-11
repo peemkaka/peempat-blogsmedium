@@ -4,7 +4,7 @@ import { LiaTimesSolid } from 'react-icons/lia';
 import ReactQuill from 'react-quill';
 import TagsInput from 'react-tagsinput';
 import { toast } from 'react-toastify';
-import { Blog } from '../../../Context/Context';
+import { Blog } from '../../../context/context';
 import { useNavigate } from 'react-router-dom';
 import { db } from '../../../firebase/firebase';
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import ReactQuill from 'react-quill';
 import Preview from './Preview';
-import { Blog } from '../../../Context/Context';
+import { Blog } from '../../../context/context';
 
 function Write() {
   const [description, setDescription] = useState('');
