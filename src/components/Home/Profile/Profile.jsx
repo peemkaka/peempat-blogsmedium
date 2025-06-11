@@ -10,9 +10,10 @@ import EditProfile from './EditProfile';
 import { Blog } from '../../../context/context';
 import { useParams } from 'react-router-dom';
 import useFetch from '../../../hooks/useFetch';
+import useSingleFetch from '../../../hooks/useSingleFetch';
 
 const Profile = () => {
-  const { allUsers } = Blog();
+  const { allUsers,currentUser } = Blog();
   const { userId } = useParams();
 
   const activites = [
@@ -35,6 +36,16 @@ const Profile = () => {
   const [editModal, setEditModal] = useState(false);
 
   const { data, loading } = useFetch('users');
+  const { data: follows } = useSingleFetch({
+    collectionName: 'users',
+    id: userId,
+    subCollectionName: 'follows',
+  });
+  const { data: followers } = useSingleFetch({
+    collectionName: 'users',
+    id: userId,
+    subCollectionName: 'followers',
+  });
   const getUserData = data && data.find((user) => user.id === userId);
 
   return (
@@ -43,8 +54,8 @@ const Profile = () => {
       <div className="mt-[9rem] flex-[2]">
         <div className="flex items-end gap-4">
           <h2 className="text-3xl sm:text-5xl font-bold capitalize">{getUserData?.username}</h2>
-          <p className="text-gray-500 text-xs sm:text-sm">Followers (2)</p>
-          <p className="text-gray-500 text-xs sm:text-sm">Followings (2)</p>
+          <p className="text-gray-500 text-xs sm:text-sm">Followers ({followers.length})</p>
+          <p className="text-gray-500 text-xs sm:text-sm">Followings ({follows.length})</p>
         </div>
         <div className="flex items-center gap-5 mt-[1rem] border-b border-gray-300 mb-[3rem]">
           {activites.map((item, i) => (

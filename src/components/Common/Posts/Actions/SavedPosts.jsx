@@ -11,7 +11,7 @@ function SavedPosts({ post }) {
   const { currentUser } = Blog();
   const { data, loading } = useSingleFetch({
     collectionName: 'users',
-    id: currentUser?.uid,
+    id: post?.userId,
     subCollectionName: 'savedPosts',
   });
 

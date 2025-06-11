@@ -4,7 +4,7 @@ import { MdOutlineLocalLibrary } from "react-icons/md";
 import { BiSpreadsheet } from "react-icons/bi";
 import { HiOutlineChartBar } from "react-icons/hi";
 import { LiaEditSolid } from "react-icons/lia";
-import { Blog } from "../../../Context/Context";
+import { Blog } from "../../../context/context";
 import { Link, useNavigate } from "react-router-dom";
 import { secretEmail } from "../../../utils/helper";
 import { signOut } from "firebase/auth";
