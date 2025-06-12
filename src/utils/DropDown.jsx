@@ -4,7 +4,7 @@ function DropDown({ children, size, showDrop, setShowDrop }) {
   const dropRef = useRef(null);
   useEffect(() => {
     const clickOutSide = (e) => {
-      if (dropRef.current && !dropRef.current.contains(e.target)) {
+      if (showDrop && dropRef.current && dropRef.current && !dropRef.current.contains(e.target)) {
         setShowDrop(false); 
       }
     };
@@ -12,7 +12,7 @@ function DropDown({ children, size, showDrop, setShowDrop }) {
     return () => {
       window.removeEventListener('mousedown', clickOutSide);
     };
-  }, []);
+  }, [dropRef,showDrop]);
   return (
     <>
       {showDrop && (

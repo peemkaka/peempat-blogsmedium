@@ -6,16 +6,23 @@ import SavedPosts from './Actions/SavedPosts';
 import Loading from '../../Loading/Loading';
 import { Blog } from '../../../context/context';
 import Actions from './Actions/Actions';
+import { useNavigate } from 'react-router-dom';
 
 function PostCard({ post }) {
-  const {currentUser} = Blog();
+  const { currentUser } = Blog();
   const { title, desc, created, image, id: postId, userId } = post; // เปลี่ยน postImg เป็น image
   const { data, loading } = useFetch('users');
   const getUserData = data && data.find((user) => user.id === userId);
+
+  const navigate = useNavigate();
+  const handlePostClick = () => {
+    navigate(`/post/${postId}`);
+  };
+
   return (
     <section>
-      <div className="flex flex-col sm:flex-row gap-4 cursor-pointer">
-        {loading && <Loading/>}
+      <div onClick={handlePostClick} className="flex flex-col sm:flex-row gap-4 cursor-pointer">
+        {loading && <Loading />}
         <div className="flex-[2.5]">
           <p className="pb-2 font-semibold capitalize">{getUserData?.username}</p>
           <h2 className="text-xl font-bold line-clamp-2 leading-6 capitalize">{title}</h2>
@@ -35,7 +42,7 @@ function PostCard({ post }) {
         </p>
         <div className="flex items-center gap-3">
           <SavedPosts post={post} getUserData={getUserData} />
-          {currentUser?.uid === userId && <Actions/>}
+          {currentUser?.uid === userId && <Actions />}
         </div>
       </div>
     </section>

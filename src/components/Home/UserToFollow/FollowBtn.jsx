@@ -4,6 +4,7 @@ import { deleteDoc, doc, setDoc } from 'firebase/firestore';
 import { db } from '../../../firebase/firebase';
 import { toast } from 'react-toastify';
 import useSingleFetch from '../../../hooks/useSingleFetch';
+import { useLocation } from 'react-router-dom';
 
 function FollowBtn({ userId }) {
   const [isFollowing, setIsFollowing] = useState(false);
@@ -43,10 +44,14 @@ function FollowBtn({ userId }) {
       toast.error(error.message);
     }
   };
+  const { pathname } = useLocation();
   return (
-    <button onClick={handleFollow} className={`border border-black px-3 py-[0.2rem] rounded-full
-     ${isFollowing ? 'text-gray-500 border-none' : ""}
-    `}>
+    <button
+      onClick={handleFollow}
+      className={`${pathname === '/' ? 'border border-black' : ''} px-3 py-[0.2rem] rounded-full
+     ${isFollowing ? 'text-gray-500 border-none' : ''}
+    `}
+    >
       {isFollowing ? 'Following' : 'Follow'}
     </button>
   );
