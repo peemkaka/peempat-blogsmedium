@@ -10,10 +10,12 @@ const BlogContext = createContext();
 const Context = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [userLoading,setUserLoading] = useState(true);
+  const [userLoading, setUserLoading] = useState(true);
   const [allUsers, setAllUsers] = useState([]);
+  const [showComment, setShowComment] = useState(false);
+  const [commentLength, setCommentLength] = useState(0);
 
-  const [publish,setPublish] = useState(false);
+  const [publish, setPublish] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -34,11 +36,23 @@ const Context = ({ children }) => {
         setAllUsers(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
       });
     };
-    getUsers(); 
+    getUsers();
   }, []);
 
   return (
-    <BlogContext.Provider value={{ currentUser, setCurrentUser , allUsers , publish , setPublish}}>
+    <BlogContext.Provider
+      value={{
+        currentUser,
+        setCurrentUser,
+        allUsers,
+        publish,
+        setPublish,
+        showComment,
+        setShowComment,
+        commentLength,
+        setCommentLength,
+      }}
+    >
       {loading ? <Loading /> : children}
     </BlogContext.Provider>
   );

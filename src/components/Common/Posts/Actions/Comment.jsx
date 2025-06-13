@@ -1,11 +1,15 @@
 import React from 'react'
 import { FaRegComment } from 'react-icons/fa'
+import { Blog } from '../../../../context/context'
 
 function Comment() {
+  const {setShowComment, commentLength} = Blog()
   return (
-    <button className='flex items-center gap-1 text-sm py-[0.5rem]'>
+    <button
+    onClick={() => setShowComment(true)}
+    className='flex items-center gap-1 text-sm py-[0.5rem]'>
       <FaRegComment className='text-xl'/>
-      <span>1</span>
+      <span>{commentLength}</span>
     </button>
   )
 }

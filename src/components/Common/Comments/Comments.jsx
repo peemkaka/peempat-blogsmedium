@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from '../../../utils/Modal';
 import { LiaTimesSolid } from 'react-icons/lia';
 import { Blog } from '../../../context/context';
@@ -10,8 +10,8 @@ import Loading from '../../Loading/Loading';
 import Comment from './Comment';
 
 function Comments({ postId }) {
-  const [showModal, setShowModal] = useState(true);
-  const { currentUser, allUsers } = Blog();
+  const { currentUser, allUsers, showComment, setShowComment ,setCommentLength,commentLength} = Blog();
+  const [showModal, setShowModal] = useState(false);
   const [comment, setComment] = useState('');
   const [commentData, setCommentata] = useState([]);
 
@@ -38,17 +38,23 @@ function Comments({ postId }) {
       toast.error('An error occurred while writing the comment: ' + error.message);
     }
   };
+
+  useEffect(() => {
+    if (data) {
+      setCommentLength(data.length);
+    }
+  }, [data]);
   return (
-    <Modal setModal={setShowModal} showModal={showModal}>
+    <Modal setModal={setShowComment} showModal={showComment}>
       <section
         className={`fixed top-0 right-0 bottom-0 z-50 bg-white w-[22rem] shadow-xl p-5
-        overflow-y-auto transition-all duration-500 ease-in-out ${showModal ? 'translate-x-0' : 'translate-x-[23rem]'}
+        overflow-y-auto transition-all duration-500 ease-in-out ${showComment ? 'translate-x-0' : 'translate-x-[23rem]'}
         `}
       >
         {/*header */}
         <div className="flex items-center justify-between">
-          <h3 className="text-xl font-bold">Responses(1)</h3>
-          <button onClick={() => setShowModal(false)} className="text-xl">
+          <h3 className="text-xl font-bold">Responses({commentLength})</h3>
+          <button onClick={() => setShowComment(false)} className="text-xl">
             <LiaTimesSolid />
           </button>
         </div>
@@ -89,9 +95,11 @@ function Comments({ postId }) {
         {data && data?.length === 0 ? (
           <p>This post ha not comments</p>
         ) : (
-          data.map((item, i) =>
-            loading ? <Loading /> : <Comment postId={postId} item={item} key={i} />
-          )
+          <div className="border-t py-4 mt-8 flex flex-col gap-8">
+            {data.map((item, i) =>
+              loading ? <Loading /> : <Comment postId={postId} item={item} key={i} />
+            )}
+          </div>
         )}
       </section>
     </Modal>
