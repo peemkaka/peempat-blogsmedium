@@ -1,13 +1,49 @@
-import React from 'react'
-import { PiHandsClappingDuotone } from 'react-icons/pi'
+import React, { useEffect, useState } from 'react';
+import { PiHandsClappingDuotone } from 'react-icons/pi';
+import { toast } from 'react-toastify';
+import { deleteDoc, doc, setDoc } from 'firebase/firestore';
+import { db } from '../../../../firebase/firebase';
+import { Blog } from '../../../../context/context';
+import useSingleFetch from '../../../../hooks/useSingleFetch';
+function Like({ post, postId }) {
+  if (!postId) return null; // ป้องกัน error
 
-function Like() {
+  const [isLiked, setIsLiked] = useState(false);
+  const { currentUser } = Blog();
+  const { data } = postId
+    ? useSingleFetch({ collectionName: 'posts', id: postId, subCollectionName: 'likes' })
+    : { data: [] };
+
+  useEffect(() => {
+    setIsLiked(data && data.findIndex((item) => item.id === currentUser?.uid) !== -1);
+  }, [data, currentUser]);
+
+  console.log('Like component postId:', postId);
+
+  const handleLike = async () => {
+    if (!postId || !currentUser?.uid) {
+      toast.error('Missing postId or user');
+      return;
+    }
+    try {
+      const likeRef = doc(db, 'posts', postId, 'likes', currentUser.uid);
+      if (isLiked) {
+        await deleteDoc(likeRef);
+      } else {
+        await setDoc(likeRef, { userId: currentUser.uid });
+        toast.success('Post Liked');
+      }
+    } catch (error) {
+      toast.error('An Error Occurred: ' + error.message);
+    }
+  };
+
   return (
-    <button className='flex items-center gap-1 text-sm py-[0.5rem]'>
-      <PiHandsClappingDuotone className='text-xl'/>
-      <span>1</span>
+    <button onClick={handleLike} className="flex items-center gap-1 text-sm py-[0.5rem]">
+      <PiHandsClappingDuotone className={`text-xl ${isLiked ? 'text-black' : 'text-gray-500'}`} />
+      <span>{data?.length}</span>
     </button>
-  )
-} 
+  );
+}
 
-export default Like
+export default Like;

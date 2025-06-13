@@ -78,7 +78,7 @@ function SinglePost() {
             </div>
             <div className="flex items-center justify-between border-b border-t border-gray-200">
               <div className="flex items-center gap-5">
-                <Like />
+                <Like post={post} postId={postId}/>
                 <Comment />
               </div>
               <div className="flex items-center pt-2 gap-5">
