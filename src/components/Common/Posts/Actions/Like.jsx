@@ -5,7 +5,7 @@ import { deleteDoc, doc, setDoc } from 'firebase/firestore';
 import { db } from '../../../../firebase/firebase';
 import { Blog } from '../../../../context/context';
 import useSingleFetch from '../../../../hooks/useSingleFetch';
-function Like({ post, postId }) {
+function Like({ postId }) {
   if (!postId) return null; // ป้องกัน error
 
   const [isLiked, setIsLiked] = useState(false);
