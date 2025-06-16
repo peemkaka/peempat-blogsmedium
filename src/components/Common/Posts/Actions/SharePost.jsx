@@ -10,22 +10,51 @@ import {
   BiLogoFacebook,
   BiLogoLinkedin,
 } from 'react-icons/bi';
+import { toast } from 'react-toastify';
 
 function SharePost() {
   const [showDrop, setShowDrop] = useState(false);
+  const path = window.location.href;
+  const copyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(path);
+      toast.success('Link copied to clipboard!');
+      setShowDrop(false);
+    } catch (err) {
+      toast.error(err.message);
+    }
+  };
   return (
     <div className="relative">
       <button
-        onClick={() => setShowDrop(!showDrop)}
+        onClick={() => setShowDrop(true)}
         className="flex items-center gap-1 text-sm py-[0.5rem]"
       >
         <CiShare1 className="text-2xl" />
       </button>
       <DropDown showDrop={showDrop} setShowDrop={setShowDrop} size="w-[12rem]">
-        <Button click="" title="Copy Link" icon={<BiLink className="text-xl" />} />
-        <Button click="" title="Share On Twitter" icon={<BiLogoTwitter className="text-xl" />} />
-        <Button click="" title="Share On Facebook" icon={<BiLogoFacebook className="text-xl" />} />
-        <Button click="" title="Share On Linkedin" icon={<BiLogoLinkedin className="text-xl" />} />
+        <Button click={copyLink} title="Copy Link" icon={<BiLink className="text-xl" />} />
+        <TwitterShareButton url={path} className="w-full">
+          <Button
+            click={() => setShowDrop(false)}
+            title="Share On Twitter"
+            icon={<BiLogoTwitter className="text-xl" />}
+          />
+        </TwitterShareButton>
+        <FacebookShareButton url={path} className="w-full">
+          <Button
+            click={() => setShowDrop(false)}
+            title="Share On Facebook"
+            icon={<BiLogoFacebookCircle className="text-xl" />}
+          />  
+        </FacebookShareButton>
+        <LinkedinShareButton url={path} className="w-full">
+          <Button
+            click={() => setShowDrop(false)}
+            title="Share On Linkedin"
+            icon={<BiLogoLinkedinSquare className="text-xl" />}
+          />      
+        </LinkedinShareButton>
       </DropDown>
     </div>
   );
