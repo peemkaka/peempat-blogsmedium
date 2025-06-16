@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import './index.css';
 import "react-toastify/dist/ReactToastify.css";
-import Context from './Context/Context';
+import Context from './context/context';
 import 'react-quill/dist/quill.bubble.css';
 import 'react-tagsinput/react-tagsinput.css'
 
