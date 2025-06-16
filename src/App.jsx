@@ -9,6 +9,7 @@ import { Blog } from './context/context.jsx';
 import Profile from './components/Home/Profile/Profile.jsx';
 import Write from './components/Home/Write/Write.jsx';
 import SinglePost from './components/Common/Posts/SinglePost.jsx';
+import EditPost from './components/Common/Posts/EditPost.jsx';
 
 function App() {
   const { currentUser } = Blog();
@@ -22,6 +23,7 @@ function App() {
         <Route path="/profile/:userId" element={<Profile />} />
         <Route path="/write" element={<Write />} />
         <Route path="/post/:postId" element={<SinglePost />} />
+        <Route path="/editPost/:postId" element={<EditPost />} />
         <Route path="*" element={<Navigate to={!currentUser ? '/demo' : '/'} />} />
       </Routes>
     </>

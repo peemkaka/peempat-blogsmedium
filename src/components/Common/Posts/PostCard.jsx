@@ -27,13 +27,13 @@ function PostCard({ post }) {
           <p className="pb-2 font-semibold capitalize">{getUserData?.username}</p>
           <h2 className="text-xl font-bold line-clamp-2 leading-6 capitalize">{title}</h2>
           <div
-            className="py-1 text-gray-500 line-clamp-2 leading-5"
+            className="py-1 text-gray-500 line-clamp-3 leading-5"
             dangerouslySetInnerHTML={{ __html: desc }}
           />
           {/* แสดงรูป */}
         </div>
         <div className="flex-[1]">
-          {image && <img src={image} alt="post" className="w-[53rem] h-[8rem] object-cover" />}
+          {image && <img src={image} alt="post" className="w-[53rem] h-[9rem] object-cover" />}
         </div>
       </div>
       <div className="flex items-center justify-between w-full md:w-[70%] mt-[2rem] md:mt-0">
@@ -42,7 +42,7 @@ function PostCard({ post }) {
         </p>
         <div className="flex items-center gap-3">
           <SavedPosts post={post} getUserData={getUserData} />
-          {currentUser?.uid === userId && <Actions />}
+          {currentUser?.uid === userId && <Actions postId={postId} />}
         </div>
       </div>
     </section>

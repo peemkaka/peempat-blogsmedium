@@ -34,7 +34,7 @@ const HomeHeader = () => {
       setLoading(true);
       const ref = doc(db, "posts", postId);
       await updateDoc(ref, {
-        title,
+        title:title,
         desc: description,
       });
       navigate(`/post/${postId}`);
