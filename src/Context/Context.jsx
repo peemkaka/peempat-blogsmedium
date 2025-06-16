@@ -5,6 +5,7 @@ import { createContext } from 'react';
 import { auth, db } from '../firebase/firebase';
 import Loading from '../components/Loading/Loading';
 import { collection, onSnapshot, query } from 'firebase/firestore';
+import useFetch from '../hooks/useFetch';
 
 const BlogContext = createContext();
 const Context = ({ children }) => {
@@ -20,6 +21,8 @@ const Context = ({ children }) => {
   const [description, setDescription] = useState('');
 
   const [publish, setPublish] = useState(false);
+
+  const {data:postData,loading:postLoading} = useFetch('posts');
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -61,6 +64,8 @@ const Context = ({ children }) => {
         setTitle,
         description,
         setDescription,
+        postData,
+        postLoading,
       }}
     >
       {loading ? <Loading /> : children}

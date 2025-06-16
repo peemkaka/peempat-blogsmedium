@@ -14,6 +14,10 @@ const Search = ({ modal, setModal }) => {
       post.title.toLowerCase().includes(search.toLowerCase())
     );
 
+  useEffect(() => {
+    console.log("Search Data:", searchData);
+  }, []);
+
   const navigate = useNavigate();
   return (
     <>

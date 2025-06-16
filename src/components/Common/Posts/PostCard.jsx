@@ -4,9 +4,9 @@ import { readTime } from '../../../utils/helper';
 import moment from 'moment';
 import SavedPosts from './Actions/SavedPosts';
 import Loading from '../../Loading/Loading';
-import { Blog } from '../../../context/context';
 import Actions from './Actions/Actions';
 import { useNavigate } from 'react-router-dom';
+import { Blog } from '../../../Context/Context';
 
 function PostCard({ post }) {
   const { currentUser } = Blog();
