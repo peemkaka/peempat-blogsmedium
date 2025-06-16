@@ -10,6 +10,7 @@ import Profile from './components/Home/Profile/Profile.jsx';
 import Write from './components/Home/Write/Write.jsx';
 import SinglePost from './components/Common/Posts/SinglePost.jsx';
 import EditPost from './components/Common/Posts/EditPost.jsx';
+import FilterPosts from './components/Demo/FilterPosts.jsx';
 
 function App() {
   const { currentUser } = Blog();
@@ -24,6 +25,7 @@ function App() {
         <Route path="/write" element={<Write />} />
         <Route path="/post/:postId" element={<SinglePost />} />
         <Route path="/editPost/:postId" element={<EditPost />} />
+        <Route path="/filter/:tag" element={<FilterPosts />} />
         <Route path="*" element={<Navigate to={!currentUser ? '/demo' : '/'} />} />
       </Routes>
     </>

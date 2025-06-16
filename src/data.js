@@ -17,12 +17,12 @@ export const nav = [
     "Technology",
     "Study",
     "Programming",
-    "Sport",
+    "Software",
     "Knowledge",
     "Self Improvement",
     "Relationships",
     "Machine Learning",
-    "Politics",
+    "IT",
   ];
   
   export const discoverActions = [
