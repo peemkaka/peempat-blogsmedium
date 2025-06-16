@@ -94,7 +94,7 @@ const Profile = () => {
           <div className="sticky top-7 flex flex-col justify-between">
             <img
               className="w-[3.5rem] h-[3.5rem] object-cover rounded-full"
-              src="/profile.jpg"
+              src={getUserData?.userImg || '/profile.jpg'}
               alt="profileImg"
             />
             <h2 className="py-2 font-bold capitalize">{getUserData?.username || 'Has no user'}</h2>

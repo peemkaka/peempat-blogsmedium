@@ -6,7 +6,7 @@ import SavedPosts from './Actions/SavedPosts';
 import Loading from '../../Loading/Loading';
 import Actions from './Actions/Actions';
 import { useNavigate } from 'react-router-dom';
-import { Blog } from '../../../Context/Context';
+import { Blog } from '../../../context/context';
 
 function PostCard({ post }) {
   const { currentUser } = Blog();

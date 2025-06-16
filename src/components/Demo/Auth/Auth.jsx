@@ -21,7 +21,6 @@ export const Auth = ({ modal, setModal }) => {
   const hidden = modal ? 'visible opacity-100' : 'invisible opacity-0';
 
   const googleAuth = async () => {
-    console.log('hi')
     try {
       const createUser = await signInWithPopup(auth, provider);
       const newUser = createUser.user;

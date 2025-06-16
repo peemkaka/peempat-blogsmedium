@@ -3,8 +3,7 @@ import Modal from '../../../utils/Modal';
 import { LiaTimesSolid } from 'react-icons/lia';
 import { toast } from 'react-toastify';
 import { doc, updateDoc } from 'firebase/firestore';
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-import { db, storage } from '../../../firebase/firebase';
+import { db } from '../../../firebase/firebase';
 
 function EditProfile({ editModal, setEditModal, getUserData }) {
   const imgRef = useRef(null);
@@ -36,6 +35,18 @@ function EditProfile({ editModal, setEditModal, getUserData }) {
     }
   }, []);
 
+  // เพิ่มฟังก์ชันแปลงไฟล์เป็น base64
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setImgUrl(reader.result); // base64 string
+      setForm({ ...form, userImg: reader.result }); // เก็บ base64 ใน form.userImg
+    };
+    reader.readAsDataURL(file);
+  };
+
   const saveForm = async () => {
     if (form['username'] === '' || form['bio'] === '') {
       toast.error('All inputs are required !!!');
@@ -43,11 +54,8 @@ function EditProfile({ editModal, setEditModal, getUserData }) {
     }
     setLoading(true);
 
-    // ใช้ mock URL ถ้ามีการเลือกไฟล์ใหม่
-    let imageUrl = getUserData?.userImg || '/profile.jpg';
-    if (form.userImg && typeof form.userImg !== 'string') {
-      imageUrl = URL.createObjectURL(form.userImg);
-    }
+    // ใช้ base64 จาก form.userImg ถ้ามี, ถ้าไม่มีใช้ของเดิม
+    let imageUrl = form.userImg || getUserData?.userImg || '/profile.jpg';
 
     try {
       const defRef = doc(db, 'users', getUserData?.userId);
@@ -59,7 +67,7 @@ function EditProfile({ editModal, setEditModal, getUserData }) {
       });
       setLoading(false);
       setEditModal(false);
-      toast.success('Profile updated successfully (mock)');
+      toast.success('Profile updated successfully');
     } catch (error) {
       toast.error('Error updating profile');
       setLoading(false);
@@ -88,14 +96,11 @@ function EditProfile({ editModal, setEditModal, getUserData }) {
                 className="min-h-[5rem] min-w-[5rem] 
                     object-cover border border-gray-4
                     rounded-full"
-                src={imgUrl ? imgUrl : '/profile.jpg'}
+                src={imgUrl || form.userImg || '/profile.jpg'}
                 alt="profile-img"
               />
               <input
-                onChange={(e) => {
-                  setImgUrl(URL.createObjectURL(e.target.files[0]));
-                  setForm({ ...form, userImg: e.target.files[0] });
-                }}
+                onChange={handleImageChange}
                 accept="image/jpg, image/png, image/jpeg"
                 ref={imgRef}
                 type="file"
@@ -107,7 +112,6 @@ function EditProfile({ editModal, setEditModal, getUserData }) {
                 <button onClick={openFile} className="text-green-600">
                   Update
                 </button>
-                <button className="text-red-600">Remove</button>
               </div>
               <p className="w-full sm:w-[20rem] text-gray-500 text-sm pt-2">
                 Recommended size: 400x400 pixels. Maximum file size: 2MB. Supported formats: JPG,
@@ -153,7 +157,7 @@ function EditProfile({ editModal, setEditModal, getUserData }) {
           </section>
         </section>
         <div className="flex items-center justify-end gap-4 pt-[2rem]">
-          <button className={btn}>Cancel</button>
+          <button onClick={() => setEditModal(false)} className={btn}>Cancel</button>
           <button onClick={saveForm} className={`${btn} bg-green-800 text-white`}>
             Save
           </button>

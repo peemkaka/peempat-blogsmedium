@@ -9,9 +9,9 @@ import useFetch from '../hooks/useFetch';
 
 const BlogContext = createContext();
 const Context = ({ children }) => {
+  const [authModal, setAuthModal] = useState(false);
   const [currentUser, setCurrentUser] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [userLoading, setUserLoading] = useState(true);
   const [allUsers, setAllUsers] = useState([]);
   const [showComment, setShowComment] = useState(false);
   const [commentLength, setCommentLength] = useState(0);
@@ -22,7 +22,7 @@ const Context = ({ children }) => {
 
   const [publish, setPublish] = useState(false);
 
-  const {data:postData,loading:postLoading} = useFetch('posts');
+  const { data: postData, loading: postLoading } = useFetch('posts');
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -66,6 +66,8 @@ const Context = ({ children }) => {
         setDescription,
         postData,
         postLoading,
+        authModal,
+        setAuthModal,
       }}
     >
       {loading ? <Loading /> : children}

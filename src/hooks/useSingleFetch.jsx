@@ -7,14 +7,16 @@ function useSingleFetch({ collectionName, id, subCollectionName }) {
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     const getSingleData = () => {
-      const postRef = query(collection(db, collectionName, id, subCollectionName));
-      onSnapshot(postRef, (snapshot) => {
-        setData(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-      });
-      setLoading(false);
+      if (id) {
+        const postRef = query(collection(db, collectionName, id, subCollectionName));
+        onSnapshot(postRef, (snapshot) => {
+          setData(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+        });
+        setLoading(false);  
+      }
     };
     getSingleData();
-  }, [db,id]);
+  }, [db, id]);
   return {
     data,
     loading,

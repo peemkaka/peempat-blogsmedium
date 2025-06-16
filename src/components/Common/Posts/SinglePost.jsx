@@ -1,5 +1,5 @@
-import { doc, getDoc } from 'firebase/firestore';
-import React, { useEffect, useState } from 'react';
+import { doc, getDoc, increment, updateDoc } from 'firebase/firestore';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { db } from '../../../firebase/firebase';
 import Loading from '../../Loading/Loading';
@@ -14,6 +14,7 @@ import Comment from './Actions/Comment';
 import SharePost from './Actions/SharePost';
 import Recommended from './Recommended';
 import Comments from '../Comments/Comments';
+import { toast } from 'react-toastify';
 
 function SinglePost() {
   const { postId } = useParams();
@@ -22,6 +23,30 @@ function SinglePost() {
   const { currentUser } = Blog();
   const { title, desc, created, image, userImg, userId, username } = post;
   const navivate = useNavigate();
+
+  const isInitialRender = useRef(true);
+  useEffect(() => {
+    // Prevent the effect from running on the initial render
+    if (isInitialRender?.current) {
+      const incrementPageView = async () => {
+        try {
+          const ref = doc(db, 'posts', postId);
+          await updateDoc(
+            ref,
+            {
+              pageViews: increment(1),
+            },
+            { merge: true }
+          );
+        } catch (error) {
+          toast.error(error.message);
+        }
+      };
+      incrementPageView();
+    }
+    isInitialRender.current = false;
+  }, []);
+
   // Fetch the post data using postId
   useEffect(() => {
     const fetchPost = async () => {
@@ -50,7 +75,6 @@ function SinglePost() {
     fetchPost();
   }, [postId, post?.userId]);
 
-  console.log('SinglePost', post);
 
   return (
     <>
@@ -70,7 +94,7 @@ function SinglePost() {
               <div>
                 <div className="capitalize">
                   <span>{username}</span>
-                  {currentUser?.uid !== userId && <FollowBtn userId={userId} />}
+                  {currentUser && currentUser?.uid !== userId && <FollowBtn userId={userId} />}
                 </div>
                 <p className="text-sm text-gray-500 ">
                   {readTime({ ___html: desc })} min read .<span>{moment(created).fromNow()}</span>
@@ -79,13 +103,15 @@ function SinglePost() {
             </div>
             <div className="flex items-center justify-between border-b border-t border-gray-200">
               <div className="flex items-center gap-5">
-                <Like postId={postId}/>
+                <Like postId={postId} />
                 <Comment />
               </div>
               <div className="flex items-center pt-2 gap-5">
                 {post && <SavedPosts post={post} />}
                 <SharePost />
-                {currentUser?.uid === userId && <Actions title={title} desc={desc} postId={postId} />}
+                {currentUser && currentUser?.uid === userId && (
+                  <Actions title={title} desc={desc} postId={postId} />
+                )}
               </div>
             </div>
             <div className="mt-[3rem]">
@@ -94,7 +120,7 @@ function SinglePost() {
             <div className="mt-6" dangerouslySetInnerHTML={{ __html: desc }} />
           </section>
           {post && <Recommended post={post} />}
-          <Comments postId={postId}/>
+          <Comments postId={postId} />
         </>
       )}
     </>

@@ -8,7 +8,7 @@ import useSingleFetch from '../../../../hooks/useSingleFetch';
 
 function SavedPosts({ post }) {
   const [isSaved, setIsSaved] = useState(false);
-  const { currentUser } = Blog();
+  const { currentUser ,setAuthModal} = Blog();
   const { data, loading } = useSingleFetch({
     collectionName: 'users',
     id: post?.userId,
@@ -32,9 +32,11 @@ function SavedPosts({ post }) {
           });
           toast.success('Post has been saved successfully!');
         }
+      }else{
+        setAuthModal(true);
       }
     } catch (error) {
-      console.error('Error saving post:', error);
+      toast.error('Error saving post:', error);
     }
   };
   return (

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { CiSearch } from "react-icons/ci";
 import Modal from "../../../utils/Modal";
-import { Blog } from "../../../Context/Context";
 import { useNavigate } from "react-router-dom";
+import { Blog } from "../../../context/context";
 
 const Search = ({ modal, setModal }) => {
   const [search, setSearch] = useState("");
@@ -14,9 +14,7 @@ const Search = ({ modal, setModal }) => {
       post.title.toLowerCase().includes(search.toLowerCase())
     );
 
-  useEffect(() => {
-    console.log("Search Data:", searchData);
-  }, []);
+
 
   const navigate = useNavigate();
   return (

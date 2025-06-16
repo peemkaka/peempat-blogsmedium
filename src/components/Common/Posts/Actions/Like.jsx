@@ -9,7 +9,7 @@ function Like({ postId }) {
   if (!postId) return null; // ป้องกัน error
 
   const [isLiked, setIsLiked] = useState(false);
-  const { currentUser } = Blog();
+  const { currentUser, setAuthModal, authModal } = Blog();
   const { data } = postId
     ? useSingleFetch({ collectionName: 'posts', id: postId, subCollectionName: 'likes' })
     : { data: [] };
@@ -18,20 +18,19 @@ function Like({ postId }) {
     setIsLiked(data && data.findIndex((item) => item.id === currentUser?.uid) !== -1);
   }, [data, currentUser]);
 
-  console.log('Like component postId:', postId);
 
   const handleLike = async () => {
-    if (!postId || !currentUser?.uid) {
-      toast.error('Missing postId or user');
-      return;
-    }
     try {
-      const likeRef = doc(db, 'posts', postId, 'likes', currentUser.uid);
-      if (isLiked) {
-        await deleteDoc(likeRef);
+      if (currentUser) {
+        const likeRef = doc(db, 'posts', postId, 'likes', currentUser.uid);
+        if (isLiked) {
+          await deleteDoc(likeRef);
+        } else {
+          await setDoc(likeRef, { userId: currentUser.uid });
+          toast.success('Post Liked');
+        }
       } else {
-        await setDoc(likeRef, { userId: currentUser.uid });
-        toast.success('Post Liked');
+        setAuthModal(true);
       }
     } catch (error) {
       toast.error('An Error Occurred: ' + error.message);
