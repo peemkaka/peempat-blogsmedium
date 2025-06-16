@@ -16,16 +16,14 @@ function Follow() {
         users.map((user, i) => {
           const { username, userId, bio, userImg } = user;
           return (
-            <div key={i} className="flex items-start gap-2 my-4">
-              <div className="flex-1 flex items-center gap-2 cursor-pointer">
-                <img
-                  onClick={() => navigate('/profile' + '/' + userId)}
-                  className="w-[3rem] h-[3rem] object-cover rounded-full"
-                  src={userImg || '/profile.jpg'}
-                  alt="userImage"
-                />
-              </div>
-              <div className="flex flex-col gap-1">
+            <div key={i} className="flex items-center gap-3 my-4">
+              <img
+                onClick={() => navigate('/profile' + '/' + userId)}
+                className="w-[3rem] h-[3rem] object-cover rounded-full cursor-pointer"
+                src={userImg || '/profile.jpg'}
+                alt="userImage"
+              />
+              <div className="flex flex-col gap-1 flex-1">
                 <h2 className="font-bold capitalize">{username}</h2>
                 <span className="leading-4 text-gray-500 text-sm line-clamp-2">
                   {bio || 'This user has no bio'}
