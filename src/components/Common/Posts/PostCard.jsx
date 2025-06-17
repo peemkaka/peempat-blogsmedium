@@ -17,7 +17,9 @@ function PostCard({ post }) {
   const navigate = useNavigate();
   const handlePostClick = () => {
     navigate(`/post/${postId}`);
-  };
+  };  
+
+  console.log('post',postId)
 
   return (
     <section>
@@ -42,7 +44,7 @@ function PostCard({ post }) {
         </p>
         <div className="flex items-center gap-3">
           <SavedPosts post={post} getUserData={getUserData} />
-          {currentUser?.uid === userId && <Actions postId={postId} />}
+          {currentUser?.uid === userId && <Actions title={title} desc={desc} postId={postId} />}
         </div>
       </div>
     </section>
