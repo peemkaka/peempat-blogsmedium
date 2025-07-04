@@ -8,7 +8,7 @@ import { useState } from 'react';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
 import { signInWithPopup } from 'firebase/auth';
-import { auth, db, provider } from '../../../firebase/firebase';
+import { auth, db, googleProvider } from '../../../firebase/firebase';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -22,12 +22,17 @@ export const Auth = ({ modal, setModal }) => {
 
   const googleAuth = async () => {
     try {
-      const createUser = await signInWithPopup(auth, provider);
+      // ใช้ signInWithPopup เพื่อเข้าสู่ระบบด้วย Google
+      const createUser = await signInWithPopup(auth, googleProvider);
       const newUser = createUser.user;
 
+      // สร้างการอ้างอิงไปยังเอกสารผู้ใช้ใน Firestore
+      // โดยใช้ UID ของผู้ใช้ที่เข้าสู่ระบบ
       const ref = doc(db, 'users', newUser.uid);
       const userDoc = await getDoc(ref);
-
+      
+      // เช็คว่าผู้ใช้มีอยู่ใน Firestore หรือไม่
+      // ถ้าไม่มีให้สร้างเอกสารใหม่ใน Firestore
       if (!userDoc.exists()) {
         await setDoc(ref, {
           userId: newUser.uid,

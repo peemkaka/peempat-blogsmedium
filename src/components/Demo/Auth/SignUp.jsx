@@ -5,49 +5,57 @@ import { toast } from 'react-toastify';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth, db } from '../../../firebase/firebase';
 import Input from '../../../utils/Input';
-import { doc ,getDoc,setDoc} from 'firebase/firestore';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 
-const SignUp = ({ setSignRequest ,setModal }) => {
+const SignUp = ({ setSignRequest, setModal }) => {
   const navigate = useNavigate();
   const [form, setForm] = useState({
-    username:'',
+    username: '',
     email: '',
     password: '',
-    rePassword:''
+    rePassword: '',
   });
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (form[("username", "email", "password", "rePassword")] === "") {
-      toast.error("All fields are required");
-    } else if (form["password"] !== form["rePassword"]) {
-      toast.error("Your passwords are not matching!!");
+    if (form[('username', 'email', 'password', 'rePassword')] === '') {
+      toast.error('All fields are required');
+    } else if (form['password'] !== form['rePassword']) {
+      toast.error('Your passwords are not matching!!');
       return;
     } else {
       setLoading(true);
-      const { user } = await createUserWithEmailAndPassword(
-        auth,
-        form.email,
-        form.password
-      );
+      try {
+        // ใช้ Firebase Authentication เพื่อสร้างผู้ใช้ใหม่ด้วยอีเมลและรหัสผ่าน
+        const { user } = await createUserWithEmailAndPassword(auth, form.email, form.password);
 
-      const ref = doc(db, "users", user.uid);
-      const userDoc = await getDoc(ref);
+        const ref = doc(db, 'users', user.uid);
+        const userDoc = await getDoc(ref);
 
-      if (!userDoc.exists()) {
-        await setDoc(ref, {
-          userId: user.uid,
-          username: form.username,
-          email: form.email,
-          userImg: "",
-          bio: "",
-          created: Date.now(),
-        });
-        navigate("/");
-        toast.success("New Account has been Created");
-        setModal(false);
-        setLoading(false);
+        // เช็คว่าผู้ใช้มีอยู่ใน Firestore หรือไม่
+        // ถ้าไม่มีให้สร้างเอกสารใหม่ใน Firestore
+        if (!userDoc.exists()) {
+          await setDoc(ref, {
+            userId: user.uid,
+            username: form.username,
+            email: form.email,
+            userImg: '',
+            bio: '',
+            created: Date.now(),
+          });
+          navigate('/');
+          toast.success('New Account has been Created');
+          setModal(false);
+          setLoading(false);
+        }
+      } catch (error) {
+        if (error.code === 'auth/email-already-in-use') {
+          toast.error('This email is already registered. Please use a different email.');
+        } else {
+          toast.error(error.message);
+        }
+        setLoading(false); // ให้แก้ไข form ต่อได้
       }
     }
   };
